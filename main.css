@@ -1,0 +1,21 @@
+.centralize{
+  text-align: center;
+}
+
+a{
+  color: #6789ab
+}
+
+div#outer{
+  width: 400px;
+  margin: auto;
+}
+
+div.all{
+    display: inline-block;
+   padding: 0.2em;
+   margin: 0px;
+   width: 5em;
+   height: 5em;
+   border-radius: 10px;
+}

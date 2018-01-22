@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Page Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+
+      <h1 class="centralize" id="heading"></h1>
+
+    <script type="text/javascript">
+      var name = "Remembrall";
+      var h = document.getElementById('heading');
+      colors = ["black", "red", "green", "indigo", "blue", "yellow"];
+
+      for(var i = 0; i < 10; i++){
+        color = colors[Math.floor(Math.random() * 6)];
+        h.innerHTML += "<span style=\"color:"+ color +"\">"+ name[i] +"</span>";
+      }
+    </script>
+
+    <div class="centralize" id="outer">
+        <div onclick="flip(0)" class="all" id="one"></div>
+        <div onclick="flip(1)" class="all" id="two"></div>
+        <div onclick="flip(2)" class="all" id="three"></div>
+        <div onclick="flip(3)" class="all" id="four"></div>
+        <div onclick="flip(4)" class="all" id="five"></div>
+        <div onclick="flip(5)" class="all" id="six"></div>
+        <div onclick="flip(6)" class="all" id="one1"></div>
+        <div onclick="flip(7)" class="all" id="two2"></div>
+        <div onclick="flip(8)" class="all" id="three3"></div>
+        <div onclick="flip(9)" class="all" id="four4"></div>
+        <div onclick="flip(10)" class="all" id="five5"></div>
+        <div onclick="flip(11)" class="all" id="six6"></div>
+    </div>
+
+    <p class="centralize" id="score"></p>
+
+    <script src="main.js" type="text/javascript"></script>
+
+    <p class="centralize">crafted by Faith Odonghanro</p>
+    <p class="centralize">
+      <a href="https://code.sololearn.com/WcJNN1LVg7E2" target="_blank">Play on sololearn app</a>
+    </p>
+
+    </body>
+</html>
