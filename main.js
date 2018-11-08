@@ -7,12 +7,16 @@ function Box(id, color) {
     this.html.id = this.id
     this.html.style.backgroundColor = color;
 
-    this.hide = (hideColor) => {
-        this.html.style.backgroundColor = hideColor;
+    this.hide = () => {
+        this.html.style.backgroundColor = 'gray';
     }
 
     this.show = (showColor) => {
         this.html.style.backgroundColor = showColor;
+    }
+
+    this.getColor = () => {
+        return this.html.style.backgroundColor
     }
 }
 
@@ -26,22 +30,27 @@ function Card(id, color = 'gray') {
 
 let cardColorMap = new Array(12);
 let cardColorCount = [0, 0, 0, 0, 0, 0];
-let cardClicked = [0, 0, 0, 0];
+let cardClicked = {
+    cardOne: false,
+    cardOneId: false,
+    cardTwo: false,
+    cardTwoId: false
+};
 
-let cardColors = ["black", "red", "green", "indigo", "blue", "yellow"];
+let cardColors = ['black', 'red', 'darkgreen', 'purple', 'darkblue', 'yellow'];
 
 let noOfCards = 12;
 let cards = []
 
 secs = 2000;
 
-score = document.getElementsByTagName("p");
+scoreBoard = document.getElementById("scoreBoard");
 
-var correct = 0;
-var failure_msg = "Sorry, you failed. Try again";
-var success_msg = "Think u're good, go again, see if u can make it 5 in a row, you already have 1";
+let score = 0;
+let failureMessage = `Sorry, you failed. Try again.`;
+let successMessage = 'Good job, play on to get higher score';
 
-
+let timer
 
 
 /************ HELPER FUNCTIONS TO HANDLE/MAINTAIN STATE ******************/
@@ -53,7 +62,7 @@ rand = (num) => {
 showCards = () => {
     cards.forEach(card => {
         do {
-            x = rand(6);
+            x = rand(noOfCards/2);
         } while (cardColorCount[x] == 2);
 
         cardColorCount[x] += 1;
@@ -65,7 +74,7 @@ showCards = () => {
 
 hideCards = () => {
     cards.forEach(card => {
-        card.hide('gray');
+        card.hide();
     })
 }
 
@@ -73,32 +82,107 @@ clikt = (e) => {
     if (!e.target.matches('div.all')) return;
     card = cards[e.target.id];
     flip(card.id)
-    console.log(card.show(cardColorMap[card.id]));
 }
 
 showIntructions = () => {
-    alert("You have " + (secs / 1000) + " secs to glance at the color arrangement. If u pick 2 consecutive colors that are the same u score a point, else if u pick a two different colors, you have lost and the game resets");
+    alert("You have " + (secs / 1000) + " secs to glance at the color arrangement. If u pick 2 consecutive colors that are the same u scoreBoard a point, else if u pick a two different colors, you have lost and the game resets");
     alert("Click OK when you're ready");
 }
 
 goAgain = (msg, reset) => {
+    clearInterval(timer);
+
     cardColorMap = new Array(12);
     cardColorCount = [0, 0, 0, 0, 0, 0];
-    cardClicked = [0, 0, 0, 0];
-    if (msg) {
-        alert(msg);
-    }
+    cardClicked = {
+        cardOne: false,
+        cardOneId: false,
+        cardTwo: false,
+        cardTwoId: false
+    };
+
+    if (msg) alert(msg);
     alert("Click OK when you're ready");
-    if (reset) {
-        correct = 0;
-    }
+    if (reset) score = 0;
+
     hideCards();
     showCards();
     setTimeout(hideCards, secs);
 }
 
+var getCorrectCardId = (correctCardColor) => {
+    for(var cardId = 0; cardId < noOfCards; cardId++) {
+        if(cardColorMap[cardId] == correctCardColor && cardClicked.cardOneId != cardId) {
+            return cardId;
+        }
+    }
+}
 
-/**************** START GAME *****************/
+toggleCard = (correctCardId, correctCardColor) => {
+    if(cards[correctCardId].getColor() != correctCardColor) cards[correctCardId].show(correctCardColor)
+    else cards[correctCardId].hide()
+}
+
+flip = (id) => {
+    /** If card is showing, do nothing */
+    if (cards[id].html.style.backgroundColor !== "gray") {
+        return;
+    }
+
+    /** Show card */
+    cards[id].html.style.backgroundColor = cardColorMap[id];
+
+    /** Check if clicked card is the FIRST of every TWO CARD SET clicked and update */
+    if (cardClicked.cardOne == false) {
+        cardClicked.cardOne = true;
+        cardClicked.cardOneId = id;
+    }
+    // Check if clicked card is the SECOND of every TWO CARD SET clicked
+    else if ((cardClicked.cardOne == true) && (cardClicked.cardTwo == false)) {
+        cardClicked.cardTwo = true;
+        cardClicked.cardTwoId = id;
+    }
+
+    /** Check if TWO CARD SET have been clicked */
+    if ((cardClicked.cardOne == true) && (cardClicked.cardTwo == true)) {
+
+        /** Check if the clicked cards in TWO SET have identical colors */
+        if (cards[cardClicked.cardOneId].html.style.backgroundColor == cards[cardClicked.cardTwoId].html.style.backgroundColor) {
+
+            /** Update */
+            score += 10;
+            scoreBoard.innerHTML = `Round ${Math.floor(score / 60) + 1}. Score:  + ${score}`;
+            
+            /** Show success message if round is cleared, then continue game */
+            if (score % 60 == 0) setTimeout(goAgain.bind(null, successMessage), 500);
+        }
+
+        /** Check if the clicked cards in TWO SET have different colors */
+        else {
+            /** Toggle correct card */
+            let correctCardColor = cardColorMap[cardClicked.cardOneId];
+            let correctCardId = getCorrectCardId(correctCardColor);
+            timer = setInterval(toggleCard.bind(null, correctCardId, correctCardColor), 200);
+
+            /** Restart game */
+            setTimeout(goAgain.bind(null, failureMessage, 1), 2000)
+        };
+
+        /** 
+         * RESET FOR NEXT TWO SETS OF CARDS
+         * This only runs if even number of cards are showing
+         */
+        cardClicked = {
+            cardOne: false,
+            cardOneId: false,
+            cardTwo: false,
+            cardTwoId: false
+        };
+    }
+
+}
+
+/********************* START GAME ***********************/
 
 window.onload = () => {
 
@@ -126,72 +210,7 @@ window.onload = () => {
     }, secs / 2);
 
     /** Hide cards 2 seconds after cards are shown */
-    setTimeout(hideCards, (secs / 2) * 2);
+    setTimeout(hideCards, (secs / 2) + secs);
 
     // PLAY
-}
-
-/**************************************************************/
-
-function flip(id) {
-    if (cards[id].html.style.backgroundColor !== "gray") {
-        return;
-    }
-
-    cards[id].html.style.backgroundColor = cardColorMap[id];
-
-    if (cardClicked[0] == 0) {
-        cardClicked[0] = 1;
-        cardClicked[2] = id;
-    }
-    else if ((cardClicked[0] == 1) && (cardClicked[1] == 0)) {
-        cardClicked[1] = 1;
-        cardClicked[3] = id;
-    }
-
-    if ((cardClicked[0] == 1) && (cardClicked[1] == 1)) {
-        if (cards[cardClicked[2]].html.style.backgroundColor == cards[cardClicked[3]].html.style.backgroundColor) {
-            correct += 10;
-            score[0].innerHTML = "Score: " + correct;
-            if (correct % 60 == 0) {
-                alert("Superb, you got all correctly");
-                switch (correct) {
-                    case 60: times = 5; break;
-                    case 120: times = 4; break;
-                    case 180: times = 3; break;
-                    case 240: times = 2; break;
-                    case 300: times = 1; break;
-                }
-                times -= 1;
-
-                if (times == 4) {
-                    goAgain(success_msg);
-                }
-                else if (times != 0) {
-                    if (times < 0) { times = 5 }
-                    goAgain("Remaining " + times + " times in a row");
-                } else {
-                    goAgain("You have proven yourself");
-                }
-
-            }
-        }
-        else {
-            t = Math.floor(correct / 60);
-            if (t < 5 && t >= 1) {
-                t += 1;
-                alert("Tough luck, you almost made it " + t + " time(s)");
-            }
-            else if (t >= 5) {
-                alert("Wow, you did it, you really are good");
-                goAgain("You could keep going", 1);
-            }
-            goAgain(failure_msg, 1);
-        }
-
-        for (i = 0; i < 4; i++) {
-            cardClicked[i] = 0;
-        }
-    }
-
 }
