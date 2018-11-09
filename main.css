@@ -6,8 +6,12 @@
   color: maroon;
 }
 
+body {
+  background-color: #f5f5f5;
+}
+
 a{
-  color: #6789ab
+  color: #6789ab;
 }
 
 div#container{
