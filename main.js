@@ -16,7 +16,7 @@ function Box(id, color) {
     }
 
     this.getColor = () => {
-        return this.html.style.backgroundColor
+        return this.html.style.backgroundColor;
     }
 }
 
@@ -85,7 +85,7 @@ clikt = (e) => {
 }
 
 showIntructions = () => {
-    alert("You have " + (secs / 1000) + " secs to glance at the color arrangement. If u pick 2 consecutive colors that are the same u scoreBoard a point, else if u pick a two different colors, you have lost and the game resets");
+    alert("You have " + (secs / 1000) + " seconds to glance at the color arrangement. If u pick 2 consecutive colors that are the same u score 10 point, else if u pick two different colors, you have lost and the game resets.");
     alert("Click OK when you're ready");
 }
 
@@ -125,12 +125,12 @@ toggleCard = (correctCardId, correctCardColor) => {
 
 flip = (id) => {
     /** If card is showing, do nothing */
-    if (cards[id].html.style.backgroundColor !== "gray") {
+    if (cards[id].getColor() !== "gray") {
         return;
     }
 
     /** Show card */
-    cards[id].html.style.backgroundColor = cardColorMap[id];
+    cards[id].show(cardColorMap[id]);
 
     /** Check if clicked card is the FIRST of every TWO CARD SET clicked and update */
     if (cardClicked.cardOne == false) {
@@ -147,7 +147,7 @@ flip = (id) => {
     if ((cardClicked.cardOne == true) && (cardClicked.cardTwo == true)) {
 
         /** Check if the clicked cards in TWO SET have identical colors */
-        if (cards[cardClicked.cardOneId].html.style.backgroundColor == cards[cardClicked.cardTwoId].html.style.backgroundColor) {
+        if (cards[cardClicked.cardOneId].getColor() == cards[cardClicked.cardTwoId].getColor()) {
 
             /** Update */
             score += 10;
@@ -162,10 +162,10 @@ flip = (id) => {
             /** Toggle correct card */
             let correctCardColor = cardColorMap[cardClicked.cardOneId];
             let correctCardId = getCorrectCardId(correctCardColor);
-            timer = setInterval(toggleCard.bind(null, correctCardId, correctCardColor), 200);
+            timer = setInterval(toggleCard.bind(null, correctCardId, correctCardColor), 100);
 
             /** Restart game */
-            setTimeout(goAgain.bind(null, failureMessage, 1), 2000)
+            setTimeout(goAgain.bind(null, failureMessage, 1), 1000)
         };
 
         /** 
