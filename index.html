@@ -9,29 +9,15 @@
 
       <h1 class="centralize" id="heading"></h1>
 
-    <script type="text/javascript">
-      var name = "Remembrall";
-      var h = document.getElementById('heading');
-      colors = ['black', 'red', 'darkgreen', 'purple', 'darkblue', 'yellow'];
-
-      for(var i = 0; i < name.length; i++){
-        color = colors[Math.floor(Math.random() * 6)];
-        h.innerHTML += "<span style=\"color:"+ color +"\">"+ name[i] +"</span>";
-      }
-    </script>
-
-    <div class="centralize" id="container">
-      <!-- Cards go here -->
-    </div>
-
-    <p class="centralize" id="scoreBoard"></p>
-
-    <script src="main.js" type="text/javascript"></script>
-
-    <p class="centralize">crafted by <a href="https://github.com/toritsejuFO">Faith Odonghanro</a></p>
-    <p class="centralize">
-      <a href="https://code.sololearn.com/WcJNN1LVg7E2" target="_blank">Play on sololearn app</a>
-    </p>
+      <script type="text/javascript" src="name.js"></script>
+      
+      <div class="main">
+        <input type="text" value="" placeholder="Enter your name" id="name" maxlength="30">
+        <br/>
+        <input type="submit" value="PLAY" id="play">
+      </div>
+      
+    <script type="text/javascript" src="index.js"></script>
 
     </body>
 </html>

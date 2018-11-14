@@ -52,6 +52,12 @@ let successMessage = 'Good job, play on to get higher score';
 
 let timer
 
+const rand_id = Math.random().toString(36).slice(2, 13) // Generate random id incase user bypasses index
+let player = {
+    name: localStorage.getItem('remembrall_name') || 'anonymous', // Get name
+    id: localStorage.getItem('remembrall_id') || localStorage.setItem('remembrall_id', rand_id), // Get id or set for first time
+}
+
 
 /************ HELPER FUNCTIONS TO HANDLE/MAINTAIN STATE ******************/
 
@@ -62,7 +68,7 @@ rand = (num) => {
 showCards = () => {
     cards.forEach(card => {
         do {
-            x = rand(noOfCards/2);
+            x = rand(noOfCards / 2);
         } while (cardColorCount[x] == 2);
 
         cardColorCount[x] += 1;
@@ -111,15 +117,15 @@ goAgain = (msg, reset) => {
 }
 
 var getCorrectCardId = (correctCardColor) => {
-    for(var cardId = 0; cardId < noOfCards; cardId++) {
-        if(cardColorMap[cardId] == correctCardColor && cardClicked.cardOneId != cardId) {
+    for (var cardId = 0; cardId < noOfCards; cardId++) {
+        if (cardColorMap[cardId] == correctCardColor && cardClicked.cardOneId != cardId) {
             return cardId;
         }
     }
 }
 
 toggleCard = (correctCardId, correctCardColor) => {
-    if(cards[correctCardId].getColor() != correctCardColor) cards[correctCardId].show(correctCardColor)
+    if (cards[correctCardId].getColor() != correctCardColor) cards[correctCardId].show(correctCardColor)
     else cards[correctCardId].hide()
 }
 
@@ -152,7 +158,7 @@ flip = (id) => {
             /** Update */
             score += 10;
             scoreBoard.innerHTML = `Round ${Math.floor(score / 60) + 1}. Score:  + ${score}`;
-            
+
             /** Show success message if round is cleared, then continue game */
             if (score % 60 == 0) setTimeout(goAgain.bind(null, successMessage), 500);
         }
@@ -166,6 +172,31 @@ flip = (id) => {
 
             /** Restart game */
             setTimeout(goAgain.bind(null, failureMessage, 1), 1000)
+
+            /********** Update player score ********/
+            player.score = score;
+
+            const options = {
+                url: 'http://167.99.7.142/users',
+                data: {
+                    method: 'POST',
+                    body: JSON.stringify(player),
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                    }
+                }
+            }
+
+            fetch(options.url, options.data)
+                .then(res => res.json())
+                .then(json => {
+                    console.log(json)
+                })
+                .catch(err => {
+                    console.error('Error' + err)
+                })
+
+            /********** End Update player score ********/            
         };
 
         /** 

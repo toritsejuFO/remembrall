@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Remebrall: scores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+  <h1 class="centralize" id="heading"></h1>
+
+  <script type="text/javascript" src="name.js"></script>
+
+  <div class="main" id="board">
+      <p class="score"><!--for styling purposes--></p>
+  </div>
+
+  <script type="text/javascript">
+    const options = {
+      url: 'http://167.99.7.142/users',
+      data: {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        }
+      }
+    }
+
+    fetch(options.url, options.data)
+      .then(res => res.json())
+      .then(users => {
+        let html = users.map(function (user, i) {
+          return `
+          <p class="score">${i+1}. ${user.name}:  ${user.score}</p>
+          `;
+        }).join('');
+        document.getElementById('board').innerHTML += html + `<p class="score"><!--for styling purposes--></p>`
+        console.log(users)
+      })
+      .catch(err => {
+        console.error('Error' + err)
+      })
+
+  </script>
+
+</body>
+
+</html>

@@ -1,3 +1,5 @@
+
+/************ GAME SECTION **************/
 .centralize{
   text-align: center;
 }
@@ -27,3 +29,91 @@ div.all{
   height: 5em;
   border-radius: 10px;
 }
+
+a#see-scores {
+  font-weight: bold;
+}
+
+/************ NAME SECTION **************/
+div.main {
+  margin: 1em auto;
+  padding: 1em auto;
+  max-width: 400px;
+  text-align: center;
+  border: none;
+  border-radius: 1em;
+  background-color: #E9E9EB;
+}
+
+input#name {
+  max-width: 300px;
+  padding: 1em;
+  margin: 1.5em;
+  border: none;
+  border-radius: 1em;
+  color: #000;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+input#play {
+  max-width: 300px;
+  padding: 1em 3em;
+  margin: 1.5em;
+  margin-top: 0;
+  border: none;
+  border-radius: 1em;
+  background: green; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(to top right, red , orange, yellow, green, cyan, blue, violet); /* For Safari */
+  background: -o-linear-gradient(to top right, red, orange, yellow, green, cyan, blue, violet); /* For Opera */
+  background: -moz-linear-gradient(to top right, red, orange, yellow, green, cyan, blue, violet); /* For Firefox */
+  background: linear-gradient(to top right, red , orange, yellow, green, cyan, blue, violet); /* Standard syntax */
+  color: #000;
+  font-weight: bold;
+  font-size: 20px;
+  opacity: 0.9;
+}
+
+/************ SCORES SECTION **************/
+
+p.score {
+  padding: .2em;
+  margin: .3em;
+  border: none;
+  border-radius: .2em;
+  color: #000;
+  background-color: #FFFFFF;
+  text-align: center;
+  font-size: 15px;
+}
+
+p.score:nth-child(1) {visibility: hidden}
+
+p.score:nth-child(2) {
+  margin: 0 1em;
+  color: gold;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+p.score:nth-child(3) {
+  margin: 1em .9em;
+  color: silver;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+p.score:nth-child(4) {
+  margin: 1em .8em;
+  color: #cd7f32; /** bronze **/
+  font-size: 17px;
+  font-weight: bold;
+}
+
+p.score:nth-child(5) {
+  margin: .5em;
+  color: red;
+}
+
+p.score:last-of-type {visibility: hidden}
