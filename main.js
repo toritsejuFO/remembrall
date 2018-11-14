@@ -91,7 +91,7 @@ clikt = (e) => {
 }
 
 showIntructions = () => {
-    alert("You have " + (secs / 1000) + " seconds to glance at the color arrangement. If u pick 2 consecutive colors that are the same u score 10 point, else if u pick two different colors, you have lost and the game resets.");
+    alert("You have " + (secs / 1000) + " seconds to glance at the color arrangement. If you pick 2 consecutive colors that are the same u score 10 point, otherwise if u pick two different colors, you have lost and the game resets.");
     alert("Click OK when you're ready");
 }
 
@@ -177,7 +177,7 @@ flip = (id) => {
             player.score = score;
 
             const options = {
-                url: 'http://167.99.7.142/users',
+                url: 'http://167.99.7.142:5000/users',
                 data: {
                     method: 'POST',
                     body: JSON.stringify(player),
@@ -196,7 +196,7 @@ flip = (id) => {
                     console.error('Error' + err)
                 })
 
-            /********** End Update player score ********/            
+            /********** End Update player score ********/
         };
 
         /** 

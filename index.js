@@ -29,7 +29,7 @@ function setNameAndSubmit() {
   }
 
   const options = {
-    url: 'http://167.99.7.142/users',
+    url: 'http://167.99.7.142:5000/users',
     data: {
       method: 'POST',
       body: JSON.stringify(player),
@@ -43,10 +43,10 @@ function setNameAndSubmit() {
     .then(res => res.json())
     .then(json => {
       console.log(json)
-      window.location = './main.html'
+      window.location = 'main.html'
     })
     .catch(err => {
       console.error('Error' + err)
-      window.location.pathname = 'main.html'
+      window.location = 'main.html'
     })
 }
